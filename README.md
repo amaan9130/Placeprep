@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 🚀 PlacePrep — Campus Placement Preparation & Recruitment Portal
 
 > A full-stack **MERN** (MongoDB, Express.js, React.js, Node.js) web platform engineered to empower college students, training & placement officers (TPO), and corporate recruiters with automated readiness scoring, aptitude & coding practice engines, and recruitment pipeline tracking.
@@ -116,3 +117,6 @@ npm test
 ```
 
 All 14 comprehensive integration tests (Auth, Eligibility, Applications, Readiness Engine, Practice, Recruiter, Admin) will execute and report passing status.
+=======
+# Placeprep
+>>>>>>> 95250b823deb49ef7a60a39ab3a1c34471a32a4e
