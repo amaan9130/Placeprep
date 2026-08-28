@@ -1,0 +1,17 @@
+{
+  "name": "placeprep-workspace",
+  "version": "1.0.0",
+  "description": "PlacePrep - Full-Stack MERN Placement Preparation & Recruitment Management Portal",
+  "scripts": {
+    "dev:server": "npm --prefix server run dev",
+    "dev:client": "npm --prefix client run dev",
+    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
+    "start": "npm --prefix server start",
+    "build:client": "npm --prefix client run build",
+    "test:server": "npm --prefix server test",
+    "seed": "npm --prefix server run seed"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
