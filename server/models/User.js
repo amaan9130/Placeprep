@@ -47,7 +47,7 @@ UserSchema.methods.matchPassword = async function (enteredPassword) {
 UserSchema.methods.getSignedJwtToken = function () {
   return jwt.sign(
     { id: this._id, role: this.role, name: this.name, email: this.email },
-    process.env.JWT_SECRET || 'placeprep_super_secret_jwt_key_2026',
+    'placeprep_production_secure_jwt_secret_key_2026_9988',
     { expiresIn: process.env.JWT_EXPIRE || '30d' }
   );
 };

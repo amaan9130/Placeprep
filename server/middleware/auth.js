@@ -12,7 +12,7 @@ export const protect = async (req, res, next) => {
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'placeprep_super_secret_jwt_key_2026');
+    const decoded = jwt.verify(token, 'placeprep_production_secure_jwt_secret_key_2026_9988');
     req.user = await User.findById(decoded.id);
 
     if (!req.user) {

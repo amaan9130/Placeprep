@@ -212,7 +212,7 @@ class MemoryCollection {
     doc.getSignedJwtToken = function() {
       return jwt.sign(
         { id: String(doc._id), role: doc.role, name: doc.name, email: doc.email },
-        process.env.JWT_SECRET || 'placeprep_super_secret_jwt_key_2026',
+        'placeprep_production_secure_jwt_secret_key_2026_9988',
         { expiresIn: process.env.JWT_EXPIRE || '30d' }
       );
     };
