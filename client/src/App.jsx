@@ -72,6 +72,8 @@ export default function App() {
               <Route path="applications" element={<ApplicationsPage />} />
               <Route path="aptitude" element={<AptitudePracticePage />} />
               <Route path="coding" element={<CodingPracticePage />} />
+              <Route path="practice/coding" element={<Navigate to="/student/coding" replace />} />
+              <Route path="practice/aptitude" element={<Navigate to="/student/aptitude" replace />} />
               <Route path="interview" element={<InterviewPrepPage />} />
               <Route path="resume" element={<ResumeBuilderPage />} />
               <Route path="readiness" element={<ReadinessScorePage />} />

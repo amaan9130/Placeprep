@@ -6,9 +6,7 @@ export const connectDB = async () => {
   const mongoUri = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/placeprep';
 
   try {
-    const conn = await mongoose.connect(mongoUri, {
-      serverSelectionTimeoutMS: 1500,
-    });
+    const conn = await mongoose.connect(mongoUri);
     console.log(`✅ MongoDB Connected to: ${conn.connection.host}/${conn.connection.name}`);
     return conn;
   } catch (err) {

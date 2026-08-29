@@ -166,8 +166,101 @@ export const submitCodingSolution = async (req, res, next) => {
     }
 
     const totalTestCases = question.testCases?.length || 3;
-    const isSuccess = code && code.trim().length > 15 && !code.includes('TODO');
-    const passedTestCases = isSuccess ? totalTestCases : Math.max(1, totalTestCases - 1);
+    
+    // Perform lightweight static check to evaluate code logic correctness
+    const lowercaseCode = code ? code.toLowerCase() : '';
+    let isSuccess = false;
+
+    if (code && code.trim().length > 25) {
+      if (question.slug === 'two-sum') {
+        const hasLoop = lowercaseCode.includes('for') || lowercaseCode.includes('while') || lowercaseCode.includes('foreach') || lowercaseCode.includes('map');
+        const hasDiffCheck = lowercaseCode.includes('-') || lowercaseCode.includes('target -') || lowercaseCode.includes('diff') || lowercaseCode.includes('complement');
+        const hasStorage = lowercaseCode.includes('map') || lowercaseCode.includes('dict') || lowercaseCode.includes('set') || lowercaseCode.includes('obj') || lowercaseCode.includes('seen') || lowercaseCode.includes('has') || lowercaseCode.includes('put');
+        // Prevent passing if they just submit default template
+        const isDefault = lowercaseCode.includes('return []') && !hasLoop;
+
+        if (hasLoop && (hasDiffCheck || hasStorage) && !isDefault) {
+          isSuccess = true;
+        }
+      } else if (question.slug === 'valid-parentheses') {
+        const hasStack = lowercaseCode.includes('stack') || lowercaseCode.includes('list') || lowercaseCode.includes('array') || lowercaseCode.includes('vector') || lowercaseCode.includes('arr');
+        const hasPushPop = lowercaseCode.includes('push') || lowercaseCode.includes('pop') || lowercaseCode.includes('append');
+        const hasMatchingCheck = lowercaseCode.includes('===') || lowercaseCode.includes('==') || lowercaseCode.includes('equals') || lowercaseCode.includes('pairs') || lowercaseCode.includes('map');
+        const isDefault = lowercaseCode.includes('return false') && !hasStack;
+
+        if (hasStack && hasPushPop && hasMatchingCheck && !isDefault) {
+          isSuccess = true;
+        }
+      } else if (question.slug === 'maximum-subarray') {
+        const hasLoop = lowercaseCode.includes('for') || lowercaseCode.includes('while') || lowercaseCode.includes('foreach');
+        const hasMaxCall = lowercaseCode.includes('math.max') || lowercaseCode.includes('max(') || lowercaseCode.includes('>') || lowercaseCode.includes('+');
+        const hasTracking = lowercaseCode.includes('max') || lowercaseCode.includes('sum') || lowercaseCode.includes('ans') || lowercaseCode.includes('curr');
+        const isDefault = lowercaseCode.includes('return 0') && !hasLoop;
+
+        if (hasLoop && (hasMaxCall || hasTracking) && !isDefault) {
+          isSuccess = true;
+        }
+      } else if (question.slug === 'reverse-string') {
+        const hasReversal = lowercaseCode.includes('reverse') || lowercaseCode.includes('split') || lowercaseCode.includes('[::-1]') || lowercaseCode.includes('swap') || lowercaseCode.includes('left < right') || lowercaseCode.includes('right--');
+        const isDefault = lowercaseCode.includes('return s') && !hasReversal;
+
+        if (hasReversal && !isDefault) {
+          isSuccess = true;
+        }
+      } else if (question.slug === 'invert-binary-tree') {
+        const hasTreeNodes = lowercaseCode.includes('left') && lowercaseCode.includes('right');
+        const hasRecursionOrStack = lowercaseCode.includes('invert') || lowercaseCode.includes('tree') || lowercaseCode.includes('stack') || lowercaseCode.includes('queue');
+
+        if (hasTreeNodes && hasRecursionOrStack) {
+          isSuccess = true;
+        }
+      } else if (question.slug === 'climbing-stairs') {
+        const hasLoopOrRecursion = lowercaseCode.includes('for') || lowercaseCode.includes('while') || lowercaseCode.includes('climbstairs') || lowercaseCode.includes('recursion') || lowercaseCode.includes('climb');
+        const hasFibonacci = lowercaseCode.includes('+') || lowercaseCode.includes('dp') || lowercaseCode.includes('first') || lowercaseCode.includes('second');
+        const isDefault = lowercaseCode.includes('return n') && !hasLoopOrRecursion;
+
+        if (hasLoopOrRecursion && hasFibonacci && !isDefault) {
+          isSuccess = true;
+        }
+      } else if (question.slug === 'merge-sorted-array') {
+        const hasLoop = lowercaseCode.includes('while') || lowercaseCode.includes('for');
+        const hasPointersOrSort = lowercaseCode.includes('nums1') && lowercaseCode.includes('nums2') && (lowercaseCode.includes('--') || lowercaseCode.includes('++') || lowercaseCode.includes('sort') || lowercaseCode.includes('j >= 0'));
+        const isDefault = lowercaseCode.includes('pass') || (lowercaseCode.includes('return') && !hasLoop);
+
+        if (hasLoop && hasPointersOrSort && !isDefault) {
+          isSuccess = true;
+        }
+      } else if (question.slug === 'linked-list-cycle') {
+        const hasLoop = lowercaseCode.includes('while') || lowercaseCode.includes('for');
+        const hasNodeTracking = lowercaseCode.includes('next') && (lowercaseCode.includes('slow') || lowercaseCode.includes('fast') || lowercaseCode.includes('seen') || lowercaseCode.includes('set'));
+        const isDefault = lowercaseCode.includes('return false') && !hasNodeTracking;
+
+        if (hasLoop && hasNodeTracking && !isDefault) {
+          isSuccess = true;
+        }
+      } else if (question.slug === 'longest-substring-without-repeating-characters') {
+        const hasLoop = lowercaseCode.includes('for') || lowercaseCode.includes('while');
+        const hasLookup = lowercaseCode.includes('set') || lowercaseCode.includes('seen') || lowercaseCode.includes('map') || lowercaseCode.includes('index') || lowercaseCode.includes('has') || lowercaseCode.includes('in');
+        const hasTracking = lowercaseCode.includes('max') || lowercaseCode.includes('len') || lowercaseCode.includes('length');
+        const isDefault = lowercaseCode.includes('return 0') && !hasLoop;
+
+        if (hasLoop && hasLookup && hasTracking && !isDefault) {
+          isSuccess = true;
+        }
+      } else if (question.slug === 'binary-search') {
+        const hasLoop = lowercaseCode.includes('while') || lowercaseCode.includes('for');
+        const hasBinarySearchPointers = (lowercaseCode.includes('mid') || lowercaseCode.includes('middle')) && lowercaseCode.includes('left') && lowercaseCode.includes('right');
+        const isDefault = lowercaseCode.includes('return -1') && !hasLoop;
+
+        if (hasLoop && hasBinarySearchPointers && !isDefault) {
+          isSuccess = true;
+        }
+      } else {
+        isSuccess = !code.includes('TODO') && code.trim().length > 30;
+      }
+    }
+
+    const passedTestCases = isSuccess ? totalTestCases : 0;
     const status = isSuccess ? 'Accepted' : 'Wrong Answer';
 
     const submission = await CodingSubmission.create({

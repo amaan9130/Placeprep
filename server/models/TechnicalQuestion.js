@@ -4,7 +4,7 @@ import mongoose from 'mongoose';
 const TechnicalQuestionSchema = new mongoose.Schema({
   category: { 
     type: String, 
-    enum: ['Java', 'JavaScript', 'React', 'Node.js', 'MongoDB', 'DBMS', 'Operating Systems', 'Computer Networks', 'OOP', 'DSA'], 
+    enum: ['Java', 'JavaScript', 'React', 'Node.js', 'MongoDB', 'DBMS', 'Operating Systems', 'Computer Networks', 'OOP', 'DSA', 'System Design', 'SQL & Databases', 'Networks', 'Web Technology'], 
     required: true 
   },
   question: { type: String, required: true },

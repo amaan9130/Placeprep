@@ -1,2 +1,4 @@
 git init.vercel
 node_modules
+.vercel
+.env*

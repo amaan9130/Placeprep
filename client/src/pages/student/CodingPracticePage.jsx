@@ -47,9 +47,79 @@ export default function CodingPracticePage() {
     fetchQuestions(activeCategory);
   }, [activeCategory]);
 
-  const selectProblem = (q) => {
+  const getStarterCodeForQuestion = (slug, lang, javascriptFallback) => {
+    if (lang === 'javascript') return javascriptFallback || 'function solution() {\n  // Write your code here\n}';
+    
+    if (slug === 'two-sum') {
+      if (lang === 'python') return "def twoSum(nums, target):\n    # Write your code here\n    # Example: return [0, 1]\n    return []";
+      if (lang === 'java') return "public class Solution {\n    public int[] twoSum(int[] nums, int target) {\n        // Write your code here\n        return new int[]{};\n    }\n}";
+      if (lang === 'cpp') return "class Solution {\npublic:\n    vector<int> twoSum(vector<int>& nums, int target) {\n        // Write your code here\n        return {};\n    }\n};";
+    }
+    
+    if (slug === 'valid-parentheses') {
+      if (lang === 'python') return "def isValid(s):\n    # Write your code here\n    return False";
+      if (lang === 'java') return "public class Solution {\n    public boolean isValid(String s) {\n        // Write your code here\n        return false;\n    }\n}";
+      if (lang === 'cpp') return "class Solution {\npublic:\n    bool isValid(string s) {\n        // Write your code here\n        return false;\n    }\n};";
+    }
+    
+    if (slug === 'maximum-subarray') {
+      if (lang === 'python') return "def maxSubArray(nums):\n    # Write your code here\n    return 0";
+      if (lang === 'java') return "public class Solution {\n    public int maxSubArray(int[] nums) {\n        // Write your code here\n        return 0;\n    }\n}";
+      if (lang === 'cpp') return "class Solution {\npublic:\n    int maxSubArray(vector<int>& nums) {\n        // Write your code here\n        return 0;\n    }\n};";
+    }
+
+    if (slug === 'reverse-string') {
+      if (lang === 'python') return "def reverseString(s):\n    # Write your code here\n    # Modify s in-place or return s\n    s.reverse()\n    return s";
+      if (lang === 'java') return "public class Solution {\n    public void reverseString(char[] s) {\n        // Write your code here\n    }\n}";
+      if (lang === 'cpp') return "class Solution {\npublic:\n    void reverseString(vector<char>& s) {\n        // Write your code here\n    }\n};";
+    }
+    
+    if (slug === 'invert-binary-tree') {
+      if (lang === 'python') return "def invertTree(root):\n    # Write your code here\n    if not root: return None\n    root.left, root.right = invertTree(root.right), invertTree(root.left)\n    return root";
+      if (lang === 'java') return "public class Solution {\n    public TreeNode invertTree(TreeNode root) {\n        // Write your code here\n        return root;\n    }\n}";
+      if (lang === 'cpp') return "class Solution {\npublic:\n    TreeNode* invertTree(TreeNode* root) {\n        // Write your code here\n        return root;\n    }\n};";
+    }
+    
+    if (slug === 'climbing-stairs') {
+      if (lang === 'python') return "def climbStairs(n):\n    # Write your code here\n    return 0";
+      if (lang === 'java') return "public class Solution {\n    public int climbStairs(int n) {\n        // Write your code here\n        return 0;\n    }\n}";
+      if (lang === 'cpp') return "class Solution {\npublic:\n    int climbStairs(int n) {\n        // Write your code here\n        return 0;\n    }\n};";
+    }
+
+    if (slug === 'merge-sorted-array') {
+      if (lang === 'python') return "def merge(nums1, m, nums2, n):\n    # Write your code here\n    # Modify nums1 in-place, do not return anything\n    pass";
+      if (lang === 'java') return "public class Solution {\n    public void merge(int[] nums1, int m, int[] nums2, int n) {\n        // Write your code here\n    }\n}";
+      if (lang === 'cpp') return "class Solution {\npublic:\n    void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {\n        // Write your code here\n    }\n};";
+    }
+
+    if (slug === 'linked-list-cycle') {
+      if (lang === 'python') return "def hasCycle(head):\n    # Write your code here\n    return False";
+      if (lang === 'java') return "public class Solution {\n    public boolean hasCycle(ListNode head) {\n        // Write your code here\n        return false;\n    }\n}";
+      if (lang === 'cpp') return "class Solution {\npublic:\n    bool hasCycle(ListNode *head) {\n        // Write your code here\n        return false;\n    }\n};";
+    }
+
+    if (slug === 'longest-substring-without-repeating-characters') {
+      if (lang === 'python') return "def lengthOfLongestSubstring(s):\n    # Write your code here\n    return 0";
+      if (lang === 'java') return "public class Solution {\n    public int lengthOfLongestSubstring(String s) {\n        // Write your code here\n        return 0;\n    }\n}";
+      if (lang === 'cpp') return "class Solution {\npublic:\n    int lengthOfLongestSubstring(string s) {\n        // Write your code here\n        return 0;\n    }\n};";
+    }
+
+    if (slug === 'binary-search') {
+      if (lang === 'python') return "def search(nums, target):\n    # Write your code here\n    return -1";
+      if (lang === 'java') return "public class Solution {\n    public int search(int[] nums, int target) {\n        // Write your code here\n        return -1;\n    }\n}";
+      if (lang === 'cpp') return "class Solution {\npublic:\n    int search(vector<int>& nums, int target) {\n        // Write your code here\n        return -1;\n    }\n};";
+    }
+
+    if (lang === 'python') return "def solution():\n    # Write your code here\n    pass";
+    if (lang === 'java') return "public class Solution {\n    public static void main(String[] args) {\n        // Write your code here\n    }\n}";
+    if (lang === 'cpp') return "#include <iostream>\nusing namespace std;\n\nint main() {\n    // Write your code here\n    return 0;\n}";
+    
+    return javascriptFallback || 'function solution() {\n  // Write your code here\n}';
+  };
+
+  const selectProblem = (q, lang = language) => {
     setSelectedQuestion(q);
-    setCode(q.starterCode?.javascript || 'function solution() {\n  // Write your code here\n}');
+    setCode(getStarterCodeForQuestion(q.slug, lang, q.starterCode?.javascript));
     setSubmissionResult(null);
   };
 
@@ -164,7 +234,13 @@ export default function CodingPracticePage() {
                 </button>
                 <select
                   value={language}
-                  onChange={(e) => setLanguage(e.target.value)}
+                  onChange={(e) => {
+                    const newLang = e.target.value;
+                    setLanguage(newLang);
+                    if (selectedQuestion) {
+                      setCode(getStarterCodeForQuestion(selectedQuestion.slug, newLang, selectedQuestion.starterCode?.javascript));
+                    }
+                  }}
                   className="px-3 py-1.5 bg-slate-100 border border-slate-200 rounded-xl text-xs font-bold text-slate-700 outline-none"
                 >
                   <option value="javascript">JavaScript</option>

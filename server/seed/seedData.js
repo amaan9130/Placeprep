@@ -40,15 +40,11 @@ export const seedDatabase = async () => {
     const companyMap = {};
     companies.forEach(c => { companyMap[c.name] = c; });
 
-    // 2. Demo Users & Admins (Hash passwords)
-    const passwordHash = await bcrypt.hash('student123', 10);
-    const adminPasswordHash = await bcrypt.hash('admin123', 10);
-    const recruiterPasswordHash = await bcrypt.hash('recruiter123', 10);
-
+    // 2. Demo Users & Admins (Pass plain text so pre-save hook hashes them exactly once)
     const demoStudentUser = await User.create({
       name: 'Aditya Sharma',
       email: 'student@placeprep.edu',
-      password: passwordHash,
+      password: 'student123',
       role: 'student',
       college: 'Institute of Engineering & Technology',
       department: 'Computer Science & Engineering',
@@ -60,7 +56,7 @@ export const seedDatabase = async () => {
     const demoAdminUser = await User.create({
       name: 'Dr. Rajesh Verma',
       email: 'admin@placeprep.edu',
-      password: adminPasswordHash,
+      password: 'admin123',
       role: 'admin',
       college: 'Institute of Engineering & Technology',
       department: 'Training & Placement Cell',
@@ -71,7 +67,7 @@ export const seedDatabase = async () => {
     const demoRecruiterUser = await User.create({
       name: 'Sarah Jenkins',
       email: 'recruiter@google.com',
-      password: recruiterPasswordHash,
+      password: 'recruiter123',
       role: 'recruiter',
       companyName: 'Google',
       companyWebsite: 'https://careers.google.com',
