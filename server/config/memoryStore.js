@@ -1,6 +1,7 @@
 import crypto from 'crypto';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import { isInMemory } from './db.js';
 
 class MemoryCollection {
   constructor(name) {
@@ -340,7 +341,7 @@ export const memoryStores = {
 export const getModel = (name, mongooseModel) => {
   return new Proxy(mongooseModel, {
     get(target, prop) {
-      if (process.env.USE_MEMORY_STORE === 'true' || (!process.env.MONGO_URI && !target.db?.readyState)) {
+      if (process.env.USE_MEMORY_STORE === 'true' || isInMemory || (!process.env.MONGO_URI && !target.db?.readyState)) {
         const mem = memoryStores[name];
         if (mem && prop in mem) {
           return typeof mem[prop] === 'function' ? mem[prop].bind(mem) : mem[prop];
