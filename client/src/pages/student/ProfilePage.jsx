@@ -30,6 +30,22 @@ export default function ProfilePage() {
   const [saving, setSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
 
+  const handleAvatarChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      if (file.size > 1.5 * 1024 * 1024) {
+        alert("Avatar image must be under 1.5MB!");
+        return;
+      }
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setFormData(prev => ({ ...prev, avatar: reader.result }));
+        updateUser({ avatar: reader.result });
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   useEffect(() => {
     if (profile) {
       setFormData(prev => ({
@@ -88,11 +104,22 @@ export default function ProfilePage() {
     <form onSubmit={handleSave} className="space-y-8 pb-12">
       <div className="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-card flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div className="flex items-center gap-4">
-          <img
-            src={user?.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(user?.name || 'User')}`}
-            alt={user?.name}
-            className="w-16 h-16 rounded-2xl border border-slate-200 object-cover bg-slate-100"
-          />
+          <div className="relative group">
+            <img
+              src={formData.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(user?.name || 'User')}`}
+              alt={user?.name}
+              className="w-16 h-16 rounded-2xl border border-slate-200 object-cover bg-slate-100 transition-all duration-200 group-hover:brightness-75"
+            />
+            <label className="absolute inset-0 flex items-center justify-center bg-black/35 text-white text-[10px] font-extrabold rounded-2xl opacity-0 group-hover:opacity-100 cursor-pointer transition-opacity">
+              Change
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleAvatarChange}
+                className="hidden"
+              />
+            </label>
+          </div>
           <div>
             <h1 className="text-xl font-extrabold text-slate-900">{user?.name}</h1>
             <p className="text-xs text-slate-500">{formData.branch} · Batch of {user?.graduationYear || 2026}</p>
