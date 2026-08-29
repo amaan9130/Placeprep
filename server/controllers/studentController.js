@@ -98,20 +98,22 @@ export const getStudentDashboard = async (req, res, next) => {
     profile.readiness = calculateReadiness(profile, testResults, codingSubmissions, interviewPractices);
     await profile.save();
 
-    const recentApplications = await Application.find({ student: studentId })
+    const allApplications = await Application.find({ student: studentId })
       .populate({
         path: 'job',
         populate: { path: 'company', select: 'name logo tier' }
       })
-      .sort({ updatedAt: -1 })
-      .limit(5);
+      .sort({ updatedAt: -1 });
 
-    const upcomingDrives = await PlacementDrive.find({
+    const recentApplications = allApplications.filter(a => a.job && a.job.company).slice(0, 5);
+
+    const allDrives = await PlacementDrive.find({
       status: { $ne: 'Completed' }
     })
       .populate('company', 'name logo tier packageRange')
-      .sort({ date: 1 })
-      .limit(4);
+      .sort({ date: 1 });
+
+    const upcomingDrives = allDrives.filter(d => d.company).slice(0, 4);
 
     const featuredJobs = await Job.find({
       status: 'Open'
