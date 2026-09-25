@@ -283,20 +283,31 @@ export default function CodingPracticePage() {
 
             {/* Execution Result Banner */}
             {submissionResult && (
-              <div className={`p-4 rounded-2xl border flex items-center justify-between ${
+              <div className={`p-4 rounded-2xl border space-y-2.5 ${
                 submissionResult.status === 'Accepted' ? 'bg-emerald-50 border-emerald-200 text-emerald-900' : 'bg-rose-50 border-rose-200 text-rose-900'
               }`}>
-                <div className="flex items-center gap-2 text-xs font-bold">
-                  {submissionResult.status === 'Accepted' ? (
-                    <Check className="w-5 h-5 text-emerald-600" />
-                  ) : (
-                    <X className="w-5 h-5 text-rose-600" />
-                  )}
-                  <span>Status: {submissionResult.status}</span>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2 text-xs font-bold">
+                    {submissionResult.status === 'Accepted' ? (
+                      <Check className="w-5 h-5 text-emerald-600" />
+                    ) : (
+                      <X className="w-5 h-5 text-rose-600" />
+                    )}
+                    <span>Status: {submissionResult.status}</span>
+                  </div>
+                  <div className="text-xs font-semibold">
+                    Test Cases: {submissionResult.passedTestCases} / {submissionResult.totalTestCases} ({submissionResult.runtimeMs}ms)
+                  </div>
                 </div>
-                <div className="text-xs font-semibold">
-                  Test Cases: {submissionResult.passedTestCases} / {submissionResult.totalTestCases} ({submissionResult.runtimeMs}ms)
-                </div>
+                {submissionResult.message && (
+                  <div className={`text-[11px] p-2.5 rounded-xl font-mono leading-relaxed border ${
+                    submissionResult.status === 'Accepted'
+                      ? 'bg-emerald-100/50 border-emerald-200 text-emerald-800'
+                      : 'bg-rose-100/60 border-rose-200 text-rose-800'
+                  }`}>
+                    {submissionResult.message}
+                  </div>
+                )}
               </div>
             )}
 
